@@ -3,30 +3,18 @@ const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-// const axois = require('axios');
-const session = require('express-session');
+
 const userApi = require('./server/routes/user');
-const adminApi = require('./server/routes/admin');
 
 const app = express();
 
-const port = 4200;
+const port = 3000;
 
-app.use(cookieParser());
-
-app.use(session({
-  secret : 'keyboard cat',
-  cookie : {maxAge : 1000* 60 * 60 * 24 * 7},
-  resave : false,
-  path    : '/',
-  saveUninitialized : true
-}));
 
 // app.use(express.limit('50MB'));
 app.use(bodyParser.json({limit: '50MB'}));
 app.use(bodyParser.urlencoded({limit: '50MB', extended: false}));
-app.use(express.static(__dirname + '/dist/fest'));
+app.use(express.static(__dirname + '/dist/Apsolutio'));
 
 app.use(function (req, res, next) {
   // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -39,37 +27,23 @@ app.use(function (req, res, next) {
 });
 
 app.use('/user', userApi);
-app.use('/admin', adminApi);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/dist/fest/index.html'));
+  res.sendFile(path.join(__dirname, '/dist/Apsolutio/index.html'));
 });
 
-app.get('/submit', (req,res) => {
-  console.log(req.session.firstName);
-});
+
 
 
 // Server connection API
 
-// const server = http.createServer(app);
-// mongoose.connect('mongodb://localhost:27017/fest',{ useNewUrlParser: true });
-// const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function() {
-//   // we're connected!
-//   server.listen(port, () => {
-//     console.log('Server is connected to localhost:'+port);
-//   });
-// });
-
-
 const server = http.createServer(app);
-mongoose.connect('mongodb://localhost:27017/fest',{ useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/list',{ useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   // we're connected!
-  server.listen(1337,"0.0.0.0");
+  server.listen(port, () => {
+    console.log('Server is connected to localhost:'+port);
+  });
 });
-

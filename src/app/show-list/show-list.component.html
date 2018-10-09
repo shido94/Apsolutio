@@ -1,0 +1,5 @@
+<ul *ngFor="let list of listsArray; let i = index" class="list-group">
+  <li *ngIf="i%2 == 0" class="list-group-item" style="background-color: #FFD27F">{{list.list}}</li>
+  <li *ngIf="i%2 == 1" class="list-group-item" style="background-color: #FFE4B2">{{list.list}}</li>
+
+</ul>
